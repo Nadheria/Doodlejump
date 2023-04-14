@@ -10,9 +10,21 @@ import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
-    @SuppressLint("ClickableViewAccessibility")
+    private lateinit var game: GameManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        game = findViewById(R.id.mainView)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        game.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        game.onResume()
     }
 }

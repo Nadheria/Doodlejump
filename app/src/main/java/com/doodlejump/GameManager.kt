@@ -22,4 +22,12 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         canvas?.let { objects.forEach {it.draw(canvas)} }
     }
 
+    fun onPause() {
+
+    }
+
+    fun onResume() {
+
+    }
+
 }

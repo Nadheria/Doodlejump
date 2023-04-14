@@ -8,6 +8,6 @@ abstract class GameObject(var hitbox: RectF, var position: Vector) {
     abstract fun update()
     abstract fun whenHit()
 
-    fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
+    open fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
 
 }
