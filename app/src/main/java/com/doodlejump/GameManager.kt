@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.SurfaceView
 
-
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr) {
 
     private var objects = arrayListOf<GameObject>()
@@ -23,5 +22,4 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         canvas?.let { objects.forEach {it.draw(canvas)} }
     }
 
-    // Modification test pour tester les push
 }
