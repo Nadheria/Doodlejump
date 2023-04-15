@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 
-class Projectile(var p0: Vector): GameObject(10F, 10F, p0) {
+class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0) {
 
     private val projPaint = Paint()
     private val radius = 10.0f

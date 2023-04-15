@@ -2,16 +2,19 @@ package com.doodlejump
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 
-class Player(pos0: Vector): GameObject(50F, 100F, pos0) {
+class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.player) {
 
-    override fun draw(canvas: Canvas, context: Context) {
-        canvas.drawBitmap(BitmapFactory.decodeResource(context.resources,
-            R.drawable.doodlejump), pos[0], pos[1], Paint())
-    }
 
+    var acceleration = Vector(0F,-10F)
+    var speed = Vector(0F, 0F)
     override fun update() {
-
+        speed += acceleration * GameManager.TIME_CONSTANT
+        move(pos + speed * GameManager.TIME_CONSTANT)
+        if(pos.y < 0) {
+            speed.y = 125F
+        }
     }
 
     /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin

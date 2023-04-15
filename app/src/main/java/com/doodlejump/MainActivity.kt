@@ -1,6 +1,7 @@
 package com.doodlejump
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         game = findViewById(R.id.mainView)
+        game.invalidate()
     }
 
     override fun onPause() {
