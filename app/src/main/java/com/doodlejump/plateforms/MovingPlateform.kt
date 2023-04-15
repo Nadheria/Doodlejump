@@ -11,7 +11,7 @@ class MovingPlateform(iPos: Vector): Platform(iPos, R.drawable.movingplateform),
         const val PLATEFORM_SPEED = 5F
     }
 
-    override fun update() {
+    override fun update(game: GameManager) {
         if(pos.x > 1000F) direction = -1
         if(pos.x < 0) direction = 1
 

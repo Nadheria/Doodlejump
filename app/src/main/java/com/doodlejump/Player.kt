@@ -9,10 +9,12 @@ class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.play
 
     var acceleration = Vector(0F,-10F)
     var speed = Vector(0F, 0F)
-    override fun update() {
+    override fun update(game: GameManager) {
         speed += acceleration * GameManager.TIME_CONSTANT
         move(pos + speed * GameManager.TIME_CONSTANT)
         if(pos.y < 0) rebound()
+        if(pos.x < 0 - size.x) pos.x = game.width.toFloat()
+        if(pos.x > game.width) pos.x = 0F
     }
 
     fun rebound() {
@@ -28,6 +30,6 @@ class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.play
     On pourrait donc peut être faire une interface living entity qui possède la méthode en question ?
      */
     override fun whenHit(player: Player) {
-        // Useless function does to ineheritance
+        // Useless function due to inheritance
     }
 }

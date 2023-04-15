@@ -1,5 +1,5 @@
 package com.doodlejump
 
 interface IUpdate {
-    fun update()
+    fun update(game: GameManager)
 }

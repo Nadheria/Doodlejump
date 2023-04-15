@@ -31,7 +31,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     private fun gameLoop() {
-        objects.forEach { if(it is IUpdate ) it.update() }
+        objects.forEach { if(it is IUpdate ) it.update(this) }
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
@@ -61,6 +61,10 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         drawing = true
         thread = Thread(this)
         thread.start()
+    }
+
+    fun setXOrientation(deg: Float) {
+        player.speed.x = deg / 2
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {

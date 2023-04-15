@@ -14,7 +14,7 @@ class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0), IUpdate {
         canvas.drawCircle(p0[0], p0[1], radius, projPaint)
     }
 
-    override fun update() {
+    override fun update(game: GameManager) {
 
     }
 
