@@ -2,7 +2,6 @@ package com.doodlejump
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 
 class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.player), IUpdate {
 
@@ -15,6 +14,17 @@ class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.play
         if(pos.y < 0) rebound()
         if(pos.x < 0 - size.x) pos.x = game.width.toFloat()
         if(pos.x > game.width) pos.x = 0F
+    }
+
+    override fun draw(canvas: Canvas, context: Context) {
+        var res = BitmapFactory.decodeResource(context.resources, sprite)
+        var bitmap = Bitmap.createScaledBitmap(res, size.x.toInt(), size.y.toInt(), false)
+        canvas.drawBitmap(bitmap.flip(if(speed.x > 0) 1f else -1f, 1f, bitmap.width / 2f, bitmap.height / 2f), pos.x, canvas.height - pos.y - size.y, Paint())
+    }
+
+    private fun Bitmap.flip(x: Float, y: Float, cx: Float, cy: Float): Bitmap {
+        val matrix = Matrix().apply { postScale(x, y, cx, cy) }
+        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
     }
 
     fun rebound() {
