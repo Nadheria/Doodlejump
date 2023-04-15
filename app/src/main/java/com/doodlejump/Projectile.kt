@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 
-class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0) {
+class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0), IUpdate {
 
     private val projPaint = Paint()
     private val radius = 10.0f
@@ -18,7 +18,8 @@ class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0) {
 
     }
 
-    override fun whenHit() {
-
+    override fun whenHit(player: Player) {
+        // Do nothing
     }
+
 }

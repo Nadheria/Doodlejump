@@ -7,8 +7,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.doodlejump.plateforms.BasePlateform
-import com.doodlejump.plateforms.Plateform
+import com.doodlejump.plateforms.BasePlatform
+import com.doodlejump.plateforms.MovingPlateform
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
     SurfaceHolder.Callback, Runnable  {
@@ -17,6 +17,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
+    private var player = Player(Vector(520F, 700F))
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
@@ -25,12 +26,15 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     init {
-        objects.add(Player(Vector(100F, 100F)))
-        objects.add(BasePlateform(Vector(500F, 300F)))
+        objects.add(player)
+        objects.add(BasePlatform(Vector(500F, 300F)))
+        objects.add(MovingPlateform(Vector(500F, 1000F)))
         backgroundPaint.color = Color.WHITE
     }
 
-    private fun draw() {
+    private fun gameLoop() {
+        objects.forEach { if(it is IUpdate ) it.update() }
+        player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(0f, 0f, canvas.width.toFloat(), canvas.height.toFloat(), backgroundPaint)
@@ -44,9 +48,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         while (drawing) {
             val currentTime = System.currentTimeMillis()
             var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
+            gameLoop()
             totalElapsedTime += elapsedTimeMS / 1000.0
-            objects.forEach { it.update() }
-            draw()
             previousFrameTime = currentTime
         }
     }
