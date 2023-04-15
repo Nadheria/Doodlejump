@@ -1,9 +1,7 @@
 package com.doodlejump
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -37,7 +35,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
-            canvas.drawRect(0f, 0f, canvas.width.toFloat(), canvas.height.toFloat(), backgroundPaint)
+            canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
             objects.forEach { it.draw(canvas, context) }
             holder.unlockCanvasAndPost(canvas)
         }
