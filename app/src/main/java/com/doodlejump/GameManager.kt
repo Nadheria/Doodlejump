@@ -3,11 +3,13 @@ package com.doodlejump
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.doodlejump.plateforms.BasePlatform
 import com.doodlejump.plateforms.MovingPlateform
 import com.doodlejump.plateforms.Platform
+import kotlin.math.floor
 import kotlin.random.Random
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
@@ -20,16 +22,18 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var player = Player(Vector(520F, 0F))
+    private var player = Player(Vector(400F, 0F))
     private var score = 0F
     private var scorePaint = Paint()
-    private var density = 0.5F
-    private var step = Platform.size.y + 100F
+    private var genStep = 2 * Platform.size.y
+    private var genBuffer = 0F
+
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
     companion object {
         const val TIME_CONSTANT = 0.5F
+        const val DENSITY = 0.8F
     }
 
     init {
@@ -42,14 +46,12 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     private fun gameLoop() {
-        objects.forEach { if(it is IUpdate) it.update(this) }
-        removeStack.forEach { objects.remove(it) }
-        addStack.forEach { objects.add(it) }
-        timeObservables.forEach {
-            it.update()
-            if(it.duration == 0) removeStack.add(it.linkedObject) }
-        player.checkCollisions(objects)
         if (holder.surface.isValid) {
+            objects.forEach { if(it is IUpdate) it.update(this) }
+            player.checkCollisions(objects)
+            removeStack.forEach { objects.remove(it) }
+            addStack.forEach { objects.add(it) }
+            timeObservables.forEach { it.update(); if(it.duration == 0) removeStack.add(it.linkedObject) }
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
             canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
@@ -103,11 +105,11 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             if (it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
-        for (i in 0..(amount / step).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, i * step)))
+        genBuffer += amount
+        for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
+            genBuffer -= genStep
+            Log.d("", "New Plateform")
         }
     }
-
-
-
 }
