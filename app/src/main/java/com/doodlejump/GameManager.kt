@@ -40,7 +40,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     init {
         scorePaint.color = Color.RED
         scorePaint.textSize = 100F
-        objects.add(player)
         objects.add(BasePlatform(Vector(500F, 300F)))
         objects.add(BasePlatform(Vector(500F, 1300F)))
         objects.add(BasePlatform(Vector(500F, 1500F)))
@@ -52,16 +51,16 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private fun gameLoop() {
         if (holder.surface.isValid) {
             objects.forEach { if(it is IUpdate) it.update(this) }
+            player.update(this)
             player.checkCollisions(objects)
-            removeStack.forEach { objects.remove(it) }
-            removeStack.clear()
-            addStack.forEach { objects.add(it) }
-            addStack.clear()
+            removeStack.forEach { objects.remove(it) }; removeStack.clear()
+            addStack.forEach { objects.add(it) }; addStack.clear()
             timeObservables.forEach { it.update(); if(it.duration == 0) removeStack.add(it.linkedObject) }
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
-            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
             objects.forEach { it.draw(canvas, context) }
+            player.draw(canvas, context)
+            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -103,7 +102,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         // Moving the player up
         score += amount * SCORE_MULTIPLIER
         objects.forEach {
-            if(it !is Player) it.move(it.pos + Vector(0F, -amount))
+            it.move(it.pos + Vector(0F, -amount))
             if (it.pos.y < 0) removeStack.add(it)
         }
     }

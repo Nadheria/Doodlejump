@@ -51,7 +51,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun checkCollisions(objects: ArrayList<GameObject>) {
-        if(alive) objects.forEach { if(it !is Player && it.isHit(hitbox)) it.whenHit(this) }
+        if(alive) objects.forEach { if(it.isHit(hitbox)) it.whenHit(this) }
     }
 
     /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin
