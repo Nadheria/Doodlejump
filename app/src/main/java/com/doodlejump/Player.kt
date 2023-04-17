@@ -8,6 +8,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     var acceleration = Vector(0F,-10F)
     var speed = Vector(0F, 0F)
+    var alive = true
 
     companion object {
         const val SCALE = 1.5f
@@ -35,8 +36,14 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
         if(speed.y < 0) speed.y = 125F
     }
 
+    fun die() {
+        speed.y = -125F
+        acceleration.y = 0F
+        alive = false
+    }
+
     fun checkCollisions(objects: ArrayList<GameObject>) {
-        objects.forEach { if(it !is Player && it.isHit(hitbox)) it.whenHit(this) }
+        if(alive) objects.forEach { if(it !is Player && it.isHit(hitbox)) it.whenHit(this) }
     }
 
     /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin

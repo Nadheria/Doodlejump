@@ -23,3 +23,4 @@ class Projectile(var p0: Vector): GameObject(Vector(10F, 10F), p0, 0), IUpdate {
     }
 
 }
+

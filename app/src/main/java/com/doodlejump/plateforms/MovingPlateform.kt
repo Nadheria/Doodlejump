@@ -19,4 +19,5 @@ class MovingPlateform(iPos: Vector): Platform(iPos, R.drawable.movingplateform),
     }
 
 
+
 }
