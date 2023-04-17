@@ -15,7 +15,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var player = Player(Vector(520F, 700F))
+    private var player = Player(Vector(100F, 0F))
+    private var score = 0F
+    private var scorePaint = Paint()
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
@@ -24,6 +26,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     init {
+        scorePaint.color = Color.RED
+        scorePaint.textSize = 100F
         objects.add(player)
         objects.add(BasePlatform(Vector(500F, 300F)))
         objects.add(MovingPlateform(Vector(500F, 1000F)))
@@ -36,6 +40,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
+            canvas.drawText("$score", 100F, 100F, scorePaint)
             objects.forEach { it.draw(canvas, context) }
             holder.unlockCanvasAndPost(canvas)
         }
@@ -80,6 +85,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun moveObjects(amount: Float) {
+        score += amount
         objects.forEach { it.pos.y += amount }
     }
 

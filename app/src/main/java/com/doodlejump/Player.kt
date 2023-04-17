@@ -8,6 +8,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     var acceleration = Vector(0F,-10F)
     var speed = Vector(0F, 0F)
+    var gameStarted = false
 
     companion object {
         const val SCALE = 1.5f
@@ -18,7 +19,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
         if(pos.y < 0) rebound()
         if(pos.x < 0 - size.x) pos.x = game.width.toFloat()
         if(pos.x > game.width) pos.x = 0F
-        if(pos.y > game.height / 2) {
+        if(pos.y > game.height / 2 && gameStarted) {
             game.moveObjects(pos.y - game.height.toFloat() / 2)
             pos.y = game.height.toFloat() / 2
         }
