@@ -10,6 +10,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     var speed = Vector(0F, 0F)
     var gameStarted = false
     var alive = true
+    var ressource: Bitmap? = null
 
     companion object {
         const val SCALE = 1.5f
@@ -27,9 +28,8 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     override fun draw(canvas: Canvas, context: Context) {
-        var res = BitmapFactory.decodeResource(context.resources, sprite)
-        var bitmap = Bitmap.createScaledBitmap(res, size.x.toInt(), size.y.toInt(), false)
-        canvas.drawBitmap(bitmap.flip(if(speed.x > 0) 1f else -1f, 1f, bitmap.width / 2f, bitmap.height / 2f), pos.x, canvas.height - pos.y - size.y, Paint())
+        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, sprite), size.x.toInt(), size.y.toInt(), false)
+        ressource?.let { canvas.drawBitmap(it.flip(if(speed.x > 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x, canvas.height - pos.y - size.y, Paint()) }
     }
 
     private fun Bitmap.flip(x: Float, y: Float, cx: Float, cy: Float): Bitmap {
@@ -38,7 +38,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun rebound() {
-        if(speed.y < 0) speed.y = 125F
+        if(speed.y < 0) speed.y = 100F
     }
 
     fun die() {
