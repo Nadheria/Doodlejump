@@ -8,16 +8,12 @@ class MovingPlateform(iPos: Vector): Platform(iPos, R.drawable.movingplateform),
     private var direction : Byte = 1
 
     companion object {
-        const val PLATEFORM_SPEED = 5F
+        const val PLATEFORM_SPEED = 10F
     }
 
     override fun update(game: GameManager) {
-        if(pos.x > 1000F) direction = -1
+        if(pos.x > game.width - size.x) direction = -1
         if(pos.x < 0) direction = 1
-
         move(pos + Vector( direction * PLATEFORM_SPEED, 0F))
     }
-
-
-
 }
