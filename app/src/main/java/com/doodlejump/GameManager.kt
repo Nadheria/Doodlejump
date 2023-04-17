@@ -41,6 +41,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.textSize = 100F
         objects.add(player)
         objects.add(BasePlatform(Vector(500F, 300F)))
+        objects.add(BasePlatform(Vector(500F, 1300F)))
+        objects.add(BasePlatform(Vector(500F, 1500F)))
         objects.add(MovingPlateform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
     }
@@ -101,6 +103,14 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun moveObjects(amount: Float) {
+        // Generation of the new plateforms
+        genBuffer += amount
+        for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
+            genBuffer -= genStep
+        }
+
+        // Moving the player up
         score += amount / 10
         objects.forEach {
             if(it !is Player) {
@@ -108,12 +118,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
                 it.move(it.pos + Vector(0F, -amount))
             }
             if (it.pos.y < 0) removeStack.add(it)
-        }
-        // Generation of the new plateforms
-        genBuffer += amount
-        for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
-            genBuffer -= genStep
         }
     }
 }
