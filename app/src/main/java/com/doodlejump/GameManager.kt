@@ -101,7 +101,10 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     fun moveObjects(amount: Float) {
         score += amount / 10
         objects.forEach {
-            it.move(it.pos + Vector(0F, -amount))
+            if(it !is Player) {
+                Log.d("", "${it.javaClass}, ${objects.indexOf(it)} : ${it.pos.y}, $amount")
+                it.move(it.pos + Vector(0F, -amount))
+            }
             if (it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
