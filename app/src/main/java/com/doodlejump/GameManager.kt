@@ -23,7 +23,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var score = 0F
     private var scorePaint = Paint()
     private var density = 0.5F
-    private val step = Platform.size.y + 100F
+    private var step = Platform.size.y + 100F
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
@@ -96,10 +96,12 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         score += amount / 10
         objects.forEach {
             it.pos.y -= amount
-            if(it.pos.y < 0) removeStack.add(it)
+            if (it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
-        for (i in 1..(density * amount).toInt()) addStack.add(BasePlatform(Vector(Random.nextFloat() * width, amount / i + height)))
+        for (i in 1..(amount / step).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, i * step + height / 2)))
+        }
     }
 
 
