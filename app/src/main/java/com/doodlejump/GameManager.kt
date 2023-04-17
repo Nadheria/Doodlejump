@@ -16,6 +16,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var objects = arrayListOf<GameObject>()
     private var removeStack = arrayListOf<GameObject>()
     private var addStack = arrayListOf<GameObject>()
+    private var timeObservables = arrayListOf<TimeObservable>()
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
@@ -44,6 +45,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.forEach { if(it is IUpdate) it.update(this) }
         removeStack.forEach { objects.remove(it) }
         addStack.forEach { objects.add(it) }
+        timeObservables.forEach {
+            it.update()
+            if(it.duration == 0) removeStack.add(it.linkedObject) }
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
@@ -99,8 +103,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             if (it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
-        for (i in 1..(amount / step).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, i * step + height / 2)))
+        for (i in 0..(amount / step).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, i * step)))
         }
     }
 
