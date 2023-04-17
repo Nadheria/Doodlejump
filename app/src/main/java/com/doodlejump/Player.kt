@@ -8,7 +8,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     var acceleration = Vector(0F,-10F)
     var speed = Vector(0F, 0F)
-    var alive = true
+    var gameStarted = false
 
     companion object {
         const val SCALE = 1.5f
@@ -19,6 +19,10 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
         if(pos.y < 0) rebound()
         if(pos.x < 0 - size.x) pos.x = game.width.toFloat()
         if(pos.x > game.width) pos.x = 0F
+        if(pos.y > game.height / 2 && gameStarted) {
+            game.moveObjects(pos.y - game.height.toFloat() / 2)
+            pos.y = game.height.toFloat() / 2
+        }
     }
 
     override fun draw(canvas: Canvas, context: Context) {
@@ -36,14 +40,8 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
         if(speed.y < 0) speed.y = 125F
     }
 
-    fun die() {
-        speed.y = -125F
-        acceleration.y = 0F
-        alive = false
-    }
-
     fun checkCollisions(objects: ArrayList<GameObject>) {
-        if(alive) objects.forEach { if(it !is Player && it.isHit(hitbox)) it.whenHit(this) }
+        objects.forEach { if(it !is Player && it.isHit(hitbox)) it.whenHit(this) }
     }
 
     /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin

@@ -7,15 +7,23 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.doodlejump.plateforms.BasePlatform
 import com.doodlejump.plateforms.MovingPlateform
+import com.doodlejump.plateforms.Platform
+import kotlin.random.Random
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
     SurfaceHolder.Callback, Runnable  {
 
     private var objects = arrayListOf<GameObject>()
+    private var removeStack = arrayListOf<GameObject>()
+    private var addStack = arrayListOf<GameObject>()
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var player = Player(Vector(520F, 700F))
+    private var player = Player(Vector(520F, 0F))
+    private var score = 0F
+    private var scorePaint = Paint()
+    private var density = 0.5F
+    private var step = Platform.size.y + 100F
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
@@ -24,6 +32,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     init {
+        scorePaint.color = Color.RED
+        scorePaint.textSize = 100F
         objects.add(player)
         objects.add(BasePlatform(Vector(500F, 300F)))
         objects.add(MovingPlateform(Vector(500F, 1000F)))
@@ -31,11 +41,14 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     private fun gameLoop() {
-        objects.forEach { if(it is IUpdate ) it.update(this) }
+        objects.forEach { if(it is IUpdate) it.update(this) }
+        removeStack.forEach { objects.remove(it) }
+        addStack.forEach { objects.add(it) }
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
+            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
             objects.forEach { it.draw(canvas, context) }
             holder.unlockCanvasAndPost(canvas)
         }
@@ -78,5 +91,19 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
     }
+
+    fun moveObjects(amount: Float) {
+        score += amount / 10
+        objects.forEach {
+            it.pos.y -= amount
+            if (it.pos.y < 0) removeStack.add(it)
+        }
+        // Generation of the new plateforms
+        for (i in 1..(amount / step).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, i * step + height / 2)))
+        }
+    }
+
+
 
 }
