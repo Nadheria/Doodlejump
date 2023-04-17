@@ -31,7 +31,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     private fun gameLoop() {
-        objects.forEach { if(it is IUpdate ) it.update(this) }
+        objects.forEach { if(it is IUpdate) it.update(this) }
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
@@ -77,6 +77,10 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
+    }
+
+    fun moveObjects(amount: Float) {
+        objects.forEach { it.pos.y += amount }
     }
 
 }
