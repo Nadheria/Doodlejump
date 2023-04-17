@@ -41,7 +41,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.textSize = 100F
         objects.add(player)
         objects.add(BasePlatform(Vector(500F, 300F)))
-        objects.add(MovingPlateform(Vector(500F, 1000F)))
+        objects.add(MovingPlateform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
     }
 
@@ -101,7 +101,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     fun moveObjects(amount: Float) {
         score += amount / 10
         objects.forEach {
-            it.pos.y -= amount
+            it.move(it.pos + Vector(0F, -amount))
             if (it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
