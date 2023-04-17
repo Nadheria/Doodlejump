@@ -7,6 +7,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.doodlejump.plateforms.BasePlatform
 import com.doodlejump.plateforms.MovingPlateform
+import kotlin.random.Random
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
     SurfaceHolder.Callback, Runnable  {
@@ -18,6 +19,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var player = Player(Vector(100F, 0F))
     private var score = 0F
     private var scorePaint = Paint()
+    private var density = 0.5F
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
@@ -85,8 +87,13 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun moveObjects(amount: Float) {
-        score += amount
-        objects.forEach { it.pos.y -= amount }
+        score += amount / 10
+        objects.forEach {
+            it.pos.y -= amount
+            if(it.pos.y < 0) objects.remove(it)
+        }
+        // Generation of the new plateforms
+        for (i in 1..(density * amount).toInt()) objects.add(BasePlatform(Vector(Random.nextFloat() * width, amount / i + height)))
     }
 
 
