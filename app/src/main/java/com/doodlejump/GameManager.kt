@@ -99,9 +99,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             if(it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
-        for(i in 0..((amount / (step)).toInt())) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, height / 2 + i * step)))
-        }
+        for (i in 1..(density * amount).toInt()) addStack.add(BasePlatform(Vector(Random.nextFloat() * width, amount / i + height)))
     }
 
 
