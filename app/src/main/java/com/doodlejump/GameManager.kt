@@ -109,7 +109,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
             addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
             genBuffer -= genStep
-            Log.d("", "New Plateform")
         }
     }
 }

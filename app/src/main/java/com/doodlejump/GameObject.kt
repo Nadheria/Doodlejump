@@ -5,8 +5,9 @@ import android.graphics.*
 
 abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
 
-    // Left, Top, Right, Bottom
+    private var ressource: Bitmap? = null
     var hitbox = RectF(0F, 0F, 0F, 0F)
+
     init {
         move(pos)
     }
@@ -14,9 +15,8 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
     open fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
 
     open fun draw(canvas: Canvas, context: Context) {
-        var res = BitmapFactory.decodeResource(context.resources, sprite)
-        var bitmap = Bitmap.createScaledBitmap(res, size.x.toInt(), size.y.toInt(), false)
-        canvas.drawBitmap(bitmap, pos.x, canvas.height - pos.y - size.y, Paint())
+        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, sprite), size.x.toInt(), size.y.toInt(), false)
+        ressource?.let { canvas.drawBitmap(it, pos.x, canvas.height - pos.y - size.y, Paint()) }
     }
 
     fun move(newPosition: Vector) {
