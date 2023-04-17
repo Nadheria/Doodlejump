@@ -6,7 +6,7 @@ import android.graphics.*
 class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0, R.drawable.player), IUpdate {
 
 
-    var acceleration = Vector(0F,-10F)
+    var acceleration = Vector(0F, GRAVITY)
     var speed = Vector(0F, 0F)
     var gameStarted = false
     var alive = true
@@ -14,6 +14,9 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     companion object {
         const val SCALE = 1.5f
+        const val JUMP_SPEED = 100F
+        const val GRAVITY = -10F
+        const val JUMP_HEIGHT = JUMP_SPEED * JUMP_SPEED / (-2 * GRAVITY)
     }
     override fun update(game: GameManager) {
         speed += acceleration * GameManager.TIME_CONSTANT
@@ -38,7 +41,7 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun rebound() {
-        if(speed.y < 0) speed.y = 100F
+        if(speed.y < 0) speed.y = JUMP_SPEED
     }
 
     fun die() {

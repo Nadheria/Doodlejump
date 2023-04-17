@@ -34,6 +34,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     companion object {
         const val TIME_CONSTANT = 0.5F
         const val DENSITY = 0.8F
+        const val SCORE_MULTIPLIER = 0.1F
     }
 
     init {
@@ -45,6 +46,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(BasePlatform(Vector(500F, 1500F)))
         objects.add(MovingPlateform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
+        Log.d("", "${Player.JUMP_HEIGHT}")
     }
 
     private fun gameLoop() {
@@ -90,6 +92,22 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         player.speed.x = deg / 10
     }
 
+    fun moveObjects(amount: Float) {
+        // Generation of the new plateforms
+        genBuffer += amount
+        for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
+            genBuffer -= genStep
+        }
+
+        // Moving the player up
+        score += amount * SCORE_MULTIPLIER
+        objects.forEach {
+            if(it !is Player) it.move(it.pos + Vector(0F, -amount))
+            if (it.pos.y < 0) removeStack.add(it)
+        }
+    }
+
     override fun surfaceCreated(p0: SurfaceHolder) {
 
     }
@@ -100,24 +118,5 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
-    }
-
-    fun moveObjects(amount: Float) {
-        // Generation of the new plateforms
-        genBuffer += amount
-        for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
-            genBuffer -= genStep
-        }
-
-        // Moving the player up
-        score += amount / 10
-        objects.forEach {
-            if(it !is Player) {
-                Log.d("", "${it.javaClass}, ${objects.indexOf(it)} : ${it.pos.y}, $amount")
-                it.move(it.pos + Vector(0F, -amount))
-            }
-            if (it.pos.y < 0) removeStack.add(it)
-        }
     }
 }
