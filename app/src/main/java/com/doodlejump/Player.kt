@@ -22,17 +22,19 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
         speed += acceleration * GameManager.TIME_CONSTANT
         move(pos + speed * GameManager.TIME_CONSTANT)
         if(pos.y < 0) rebound()
-        if(pos.x < 0 - size.x) pos.x = game.width.toFloat()
-        if(pos.x > game.width) pos.x = 0F
-        if(pos.y > game.height / 2) {
-            game.moveObjects(pos.y - game.height.toFloat() / 2)
-            pos.y = game.height.toFloat() / 2
+        if(pos.x < 0 - size.x) pos.x = GameManager.WIDTH_FACTOR
+        if(pos.x > GameManager.WIDTH_FACTOR) pos.x = 0F
+        if(pos.y > GameManager.HEIGHT_FACTOR / 2) {
+            game.moveObjects(pos.y - GameManager.HEIGHT_FACTOR / 2)
+            pos.y = GameManager.HEIGHT_FACTOR / 2
         }
     }
 
-    override fun draw(canvas: Canvas, context: Context) {
-        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, sprite), size.x.toInt(), size.y.toInt(), false)
-        ressource?.let { canvas.drawBitmap(it.flip(if(speed.x > 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x, canvas.height - pos.y - size.y, Paint()) }
+    override fun draw(game: GameManager) {
+        var wd = game.width / GameManager.WIDTH_FACTOR
+        var hd = game.height / GameManager.HEIGHT_FACTOR
+        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
+        ressource?.let { game.canvas.drawBitmap(it.flip(if(speed.x > 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x * wd, (GameManager.HEIGHT_FACTOR - pos.y - size.y) * hd, Paint()) }
     }
 
     private fun Bitmap.flip(x: Float, y: Float, cx: Float, cy: Float): Bitmap {

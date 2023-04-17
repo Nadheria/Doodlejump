@@ -14,9 +14,12 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
     abstract fun whenHit(player: Player)
     open fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
 
-    open fun draw(canvas: Canvas, context: Context) {
-        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, sprite), size.x.toInt(), size.y.toInt(), false)
-        ressource?.let { canvas.drawBitmap(it, pos.x, canvas.height - pos.y - size.y, Paint()) }
+    // Scale with the size of the screen
+    open fun draw(game: GameManager) {
+        var wd = game.width / GameManager.WIDTH_FACTOR
+        var hd = game.height / GameManager.HEIGHT_FACTOR
+        if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
+        ressource?.let { game.canvas.drawBitmap(it, pos.x * wd, (GameManager.HEIGHT_FACTOR - pos.y - size.y) * hd, Paint()) }
     }
 
     fun move(newPosition: Vector) {

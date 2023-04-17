@@ -22,19 +22,21 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var player = Player(Vector(400F, 0F))
+    private var player = Player(Vector(400F, 10F))
     private var score = 0F
     private var scorePaint = Paint()
     private var genStep = 2 * Platform.size.y
     private var genBuffer = 0F
-
-    private lateinit var canvas: Canvas
     private lateinit var thread: Thread
+
+    lateinit var canvas: Canvas
 
     companion object {
         const val TIME_CONSTANT = 0.5F
         const val DENSITY = 0.8F
         const val SCORE_MULTIPLIER = 0.1F
+        const val WIDTH_FACTOR = 1074f
+        const val HEIGHT_FACTOR = 1584f
     }
 
     init {
@@ -58,8 +60,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             timeObservables.forEach { it.update(); if(it.duration == 0) removeStack.add(it.linkedObject) }
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
-            objects.forEach { it.draw(canvas, context) }
-            player.draw(canvas, context)
+            objects.forEach { it.draw(this) }
+            player.draw(this)
             canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
             holder.unlockCanvasAndPost(canvas)
         }
