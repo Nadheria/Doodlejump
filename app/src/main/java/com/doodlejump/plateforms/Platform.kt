@@ -6,8 +6,11 @@ import com.doodlejump.GameObject
 import com.doodlejump.Player
 import com.doodlejump.Vector
 
-abstract class Platform(var pos0: Vector, var type : Int): GameObject(Vector(224F, 60F), pos0, type) {
+abstract class Platform(var pos0: Vector, var type : Int): GameObject(size, pos0, type) {
 
+    companion object {
+        val size = Vector(224F, 60F)
+    }
     override fun isHit(box: RectF): Boolean {
         // Some collision black magic
         return (box.bottom <= pos.y + size.y && box.bottom >= pos.y - box.height() / 3)
