@@ -50,7 +50,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             objects.forEach { if(it is IUpdate) it.update(this) }
             player.checkCollisions(objects)
             removeStack.forEach { objects.remove(it) }
+            removeStack.clear()
             addStack.forEach { objects.add(it) }
+            addStack.clear()
             timeObservables.forEach { it.update(); if(it.duration == 0) removeStack.add(it.linkedObject) }
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
