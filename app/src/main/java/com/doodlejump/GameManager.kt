@@ -40,7 +40,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
-            canvas.drawText("$score", 100F, 100F, scorePaint)
+            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
             objects.forEach { it.draw(canvas, context) }
             holder.unlockCanvasAndPost(canvas)
         }
@@ -86,7 +86,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun moveObjects(amount: Float) {
         score += amount
-        objects.forEach { it.pos.y += amount }
+        objects.forEach { it.pos.y -= amount }
     }
+
+
 
 }
