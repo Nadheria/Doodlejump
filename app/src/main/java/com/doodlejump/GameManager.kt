@@ -21,7 +21,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var player = Player(Vector(520F, 0F))
     private var score = 0F
     private var scorePaint = Paint()
-    private var density = 0.5F
+    private var density = 0.02F
     private lateinit var canvas: Canvas
     private lateinit var thread: Thread
 
