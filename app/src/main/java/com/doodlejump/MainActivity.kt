@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        game.setXOrientation((p0!!.values[1] / Math.PI * 180).toFloat())
+        game.setXOrientation(-(p0!!.values[2] / Math.PI * 180).toFloat())
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

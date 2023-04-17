@@ -64,7 +64,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun setXOrientation(deg: Float) {
-        player.speed.x = deg / 2
+        player.speed.x = deg / 10
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {

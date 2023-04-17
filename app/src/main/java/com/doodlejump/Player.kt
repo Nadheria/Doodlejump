@@ -3,11 +3,15 @@ package com.doodlejump
 import android.content.Context
 import android.graphics.*
 
-class Player(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.player), IUpdate {
+class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0, R.drawable.player), IUpdate {
 
 
     var acceleration = Vector(0F,-10F)
     var speed = Vector(0F, 0F)
+
+    companion object {
+        const val SCALE = 1.5f
+    }
     override fun update(game: GameManager) {
         speed += acceleration * GameManager.TIME_CONSTANT
         move(pos + speed * GameManager.TIME_CONSTANT)
