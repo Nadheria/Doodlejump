@@ -35,8 +35,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         const val TIME_CONSTANT = 0.5F
         const val DENSITY = 0.8F
         const val SCORE_MULTIPLIER = 0.1F
-        const val WIDTH_FACTOR = 1074f
-        const val HEIGHT_FACTOR = 1584f
+        const val WIDTH = 1074f
+        const val HEIGHT = 1584f
     }
 
     init {
@@ -97,7 +97,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         // Generation of the new plateforms
         genBuffer += amount
         for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * width, genBuffer / i + height)))
+            addStack.add(BasePlatform(Vector(Random.nextFloat() * WIDTH, genBuffer / i + HEIGHT)))
             genBuffer -= genStep
         }
 

@@ -1,6 +1,5 @@
 package com.doodlejump
 
-import android.content.Context
 import android.graphics.*
 
 abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
@@ -16,10 +15,10 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
 
     // Scale with the size of the screen
     open fun draw(game: GameManager) {
-        var wd = game.width / GameManager.WIDTH_FACTOR
-        var hd = game.height / GameManager.HEIGHT_FACTOR
+        var wd = game.width / GameManager.WIDTH
+        var hd = game.height / GameManager.HEIGHT
         if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
-        ressource?.let { game.canvas.drawBitmap(it, pos.x * wd, (GameManager.HEIGHT_FACTOR - pos.y - size.y) * hd, Paint()) }
+        ressource?.let { game.canvas.drawBitmap(it, pos.x * wd, (GameManager.HEIGHT - pos.y - size.y) * hd, Paint()) }
     }
 
     fun move(newPosition: Vector) {
