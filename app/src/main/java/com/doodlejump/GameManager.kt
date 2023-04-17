@@ -13,6 +13,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     SurfaceHolder.Callback, Runnable  {
 
     private var objects = arrayListOf<GameObject>()
+    private var removeStack = arrayListOf<GameObject>()
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
@@ -38,6 +39,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     private fun gameLoop() {
         objects.forEach { if(it is IUpdate) it.update(this) }
+        removeStack.forEach { objects.remove(it) }
         player.checkCollisions(objects)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
@@ -90,7 +92,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         score += amount / 10
         objects.forEach {
             it.pos.y -= amount
-            if(it.pos.y < 0) objects.remove(it)
+            if(it.pos.y < 0) removeStack.add(it)
         }
         // Generation of the new plateforms
         for (i in 1..(density * amount).toInt()) objects.add(BasePlatform(Vector(Random.nextFloat() * width, amount / i + height)))
