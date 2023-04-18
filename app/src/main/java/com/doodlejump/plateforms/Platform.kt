@@ -18,7 +18,6 @@ abstract class Platform(var pos0: Vector, var type : Int): GameObject(size, pos0
     }
 
     override fun whenHit(player: Player) {
-        player.gameStarted = true
         player.rebound()
     }
 }

@@ -7,7 +7,6 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     var acceleration = Vector(0F, GRAVITY)
     var speed = Vector(0F, 0F)
-    var gameStarted = false
     var alive = true
     var ressource: Bitmap? = null
 
