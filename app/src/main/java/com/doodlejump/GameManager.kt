@@ -23,24 +23,24 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
     private var player = Player(Vector(400F, 10F))
-    private var score = 0F
     private var scorePaint = Paint()
     private var genStep = 2 * Platform.size.y
     private var genBuffer = 0F
     private lateinit var thread: Thread
 
+    var score = 0F
     lateinit var canvas: Canvas
 
     companion object {
         const val TIME_CONSTANT = 0.5F
-        const val DENSITY = 0.8F
+        const val DENSITY = 0.5F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
         const val HEIGHT = 1584f
     }
 
     init {
-        scorePaint.color = Color.RED
+        scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
         objects.add(BasePlatform(Vector(500F, 1300F)))
@@ -90,7 +90,11 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun setXOrientation(deg: Float) {
-        player.speed.x = deg / 10
+        if(player.alive) player.speed.x = deg / 10
+    }
+
+    fun changeScore(amount: Float) {
+        if(player.alive) score += amount * SCORE_MULTIPLIER
     }
 
     fun moveObjects(amount: Float) {
@@ -102,9 +106,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         }
 
         // Moving the player up
-        score += amount * SCORE_MULTIPLIER
+        changeScore(amount)
         objects.forEach {
-            it.move(it.pos + Vector(0F, -amount))
+            it.move(Vector(0F, -amount))
             if (it.pos.y < 0) removeStack.add(it)
         }
     }

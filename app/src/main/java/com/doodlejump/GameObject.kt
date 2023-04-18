@@ -8,7 +8,7 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
     var hitbox = RectF(0F, 0F, 0F, 0F)
 
     init {
-        move(pos)
+        move(Vector(0f, 0f))
     }
     abstract fun whenHit(player: Player)
     open fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
@@ -21,12 +21,12 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
         ressource?.let { game.canvas.drawBitmap(it, pos.x * wd, (GameManager.HEIGHT - pos.y - size.y) * hd, Paint()) }
     }
 
-    fun move(newPosition: Vector) {
-        this.pos = newPosition
-        hitbox.left = newPosition.x
-        hitbox.top = newPosition.y - size.y
-        hitbox.right = newPosition.x + size.x
-        hitbox.bottom = newPosition.y
+    fun move(inc: Vector) {
+        this.pos += inc
+        hitbox.left = pos.x
+        hitbox.top = pos.y - size.y
+        hitbox.right = pos.x + size.x
+        hitbox.bottom = pos.y
     }
 
 }

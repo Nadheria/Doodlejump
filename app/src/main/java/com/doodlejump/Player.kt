@@ -19,8 +19,8 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
     override fun update(game: GameManager) {
         speed += acceleration * GameManager.TIME_CONSTANT
-        move(pos + speed * GameManager.TIME_CONSTANT)
-        if(pos.y < 0) rebound()
+        move(speed * GameManager.TIME_CONSTANT)
+        if(pos.y < 0) if(game.score > 0) die() else rebound()
         if(pos.x < 0 - size.x) pos.x = GameManager.WIDTH
         if(pos.x > GameManager.WIDTH) pos.x = 0F
         if(pos.y > GameManager.HEIGHT / 2) {
@@ -46,8 +46,8 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun die() {
-        speed.y = -125F
         acceleration.y = 0F
+        speed.x = 0F
         alive = false
     }
 
