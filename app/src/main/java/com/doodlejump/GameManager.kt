@@ -9,6 +9,7 @@ import android.view.SurfaceView
 import com.doodlejump.plateforms.BasePlatform
 import com.doodlejump.plateforms.MovingPlateform
 import com.doodlejump.plateforms.Platform
+import com.doodlejump.Monsters.Monster
 import kotlin.math.floor
 import kotlin.random.Random
 
@@ -47,6 +48,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(BasePlatform(Vector(500F, 1500F)))
         objects.add(MovingPlateform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
+        objects.add(Monster(Vector(100F, 1200F)))
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
 

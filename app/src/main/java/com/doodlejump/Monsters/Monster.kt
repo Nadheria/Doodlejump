@@ -1,14 +1,20 @@
 package com.doodlejump.Monsters
 
-import com.doodlejump.GameObject
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Paint
+import com.doodlejump.*
 import com.doodlejump.Player
-import com.doodlejump.Vector
 
-class Monster(var pos0: Vector, var type : Int): GameObject(Vector(224F, 60F), pos0, type) {
+class Monster(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.monster){
 
+    companion object {
+        val size = Vector(224F, 60F)
+
+    }
     override fun whenHit(player: Player) {
         if (player.speed.y < 0) player.rebound()
-        else player.die()
+        else player.speed.y = 0F
     }
 
 
