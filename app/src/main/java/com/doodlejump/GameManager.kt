@@ -9,7 +9,7 @@ import android.view.SurfaceView
 import com.doodlejump.plateforms.BasePlatform
 import com.doodlejump.plateforms.MovingPlateform
 import com.doodlejump.plateforms.Platform
-import com.doodlejump.Monsters.Monster
+import com.doodlejump.monsters.Monster
 import kotlin.math.floor
 import kotlin.random.Random
 

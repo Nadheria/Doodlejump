@@ -7,13 +7,10 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
     private var ressource: Bitmap? = null
     var hitbox = RectF(0F, 0F, 0F, 0F)
 
-    init {
-        move(Vector(0f, 0f))
-    }
+    init { move(Vector(0f, 0f)) }
     abstract fun whenHit(player: Player)
     open fun isHit(box: RectF): Boolean { return box.intersect(hitbox) }
 
-    // Scale with the size of the screen
     open fun draw(game: GameManager) {
         var wd = game.width / GameManager.WIDTH
         var hd = game.height / GameManager.HEIGHT
@@ -28,5 +25,4 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
         hitbox.right = pos.x + size.x
         hitbox.bottom = pos.y
     }
-
 }
