@@ -10,7 +10,8 @@ class DurationPlatform(iPos: Vector): Platform(iPos, R.drawable.durationplatefor
 
     override fun update(game: GameManager) {
         obs.update()
-        paint.alpha = sqrt( obs.duration.toFloat() / obs.maxDuration.toFloat() * 255F.pow(2F)).toInt()
+        paint.alpha = (255F * sqrt( obs.duration.toFloat() / obs.maxDuration.toFloat())).toInt()
+        // Fonction parce que l'oeuil humain ne voit pas très bien les alpha faible, ici SQRT donne l'avantage d'avoir un alpha qui décroit relativement vers la fin
     }
 
     override fun whenHit(player: Player) {
