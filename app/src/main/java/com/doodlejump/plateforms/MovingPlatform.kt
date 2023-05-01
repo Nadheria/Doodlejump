@@ -2,7 +2,7 @@ package com.doodlejump.plateforms
 
 import com.doodlejump.*
 
-class MovingPlateform(iPos: Vector): Platform(iPos, R.drawable.movingplateform), IUpdate {
+class MovingPlatform(iPos: Vector): Platform(iPos, R.drawable.movingplateform), IUpdate {
 
     // Force to a byte because it is the smallest type available
     private var direction : Byte = 1

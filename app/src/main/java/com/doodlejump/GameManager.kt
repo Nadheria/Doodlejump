@@ -6,10 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.doodlejump.plateforms.BasePlatform
-import com.doodlejump.plateforms.MovingPlateform
-import com.doodlejump.plateforms.Platform
-import com.doodlejump.monsters.Monster
+import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
 
@@ -17,9 +14,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     SurfaceHolder.Callback, Runnable  {
 
     private var objects = arrayListOf<GameObject>()
-    private var removeStack = arrayListOf<GameObject>()
     private var addStack = arrayListOf<GameObject>()
-    private var timeObservables = arrayListOf<TimeObservable>()
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
@@ -28,6 +23,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var genStep = 2 * Platform.size.y
     private var genBuffer = 0F
     private lateinit var thread: Thread
+
+    private var timeObservables = arrayListOf<TimeObservable>()
 
     var score = 0F
     lateinit var canvas: Canvas
@@ -44,29 +41,37 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
-        objects.add(BasePlatform(Vector(500F, 1300F)))
+        objects.add(OneUsePlatform(Vector(500F, 1100F)))
         objects.add(BasePlatform(Vector(500F, 1500F)))
-        objects.add(MovingPlateform(Vector(500F, 800F)))
+        objects.add(FalsePlatform(Vector(200F, 1500F)))
+        objects.add(MovingPlatform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
-        objects.add(Monster(Vector(100F, 1200F)))
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
 
     private fun gameLoop() {
         if (holder.surface.isValid) {
-            objects.forEach { if(it is IUpdate) it.update(this) }
-            player.update(this)
-            player.checkCollisions(objects)
-            removeStack.forEach { objects.remove(it) }; removeStack.clear()
-            addStack.forEach { objects.add(it) }; addStack.clear()
-            timeObservables.forEach { it.update(); if(it.duration == 0) removeStack.add(it.linkedObject) }
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
-            objects.forEach { it.draw(this) }
-            player.draw(this)
             canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
+
+            objects.forEach {
+                if(it is IUpdate) it.update(this)
+                it.draw(this)
+            }
+            objects.removeAll{ it.removed }
+            player.update(this)
+            player.draw(this)
+            player.checkCollisions(objects)
+
+            addStack.forEach { objects.add(it) }; addStack.clear()
+            timeObservables.forEach { it.update() }
             holder.unlockCanvasAndPost(canvas)
         }
+    }
+
+    fun registerTimeObservable(obs: TimeObservable) {
+        timeObservables.add(obs)
     }
 
     override fun run() {
@@ -111,7 +116,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         changeScore(amount)
         objects.forEach {
             it.move(Vector(0F, -amount))
-            if (it.pos.y < 0) removeStack.add(it)
+            if (it.pos.y < 0) it.removed = true
         }
     }
 

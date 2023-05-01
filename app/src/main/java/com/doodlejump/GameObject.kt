@@ -6,6 +6,7 @@ abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
 
     private var ressource: Bitmap? = null
     var hitbox = RectF(0F, 0F, 0F, 0F)
+    var removed = false
 
     init { move(Vector(0f, 0f)) }
     abstract fun whenHit(player: Player)
