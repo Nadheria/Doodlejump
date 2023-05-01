@@ -1,17 +1,16 @@
 package com.doodlejump
 
-class TimeObservable(var duration: Int, var game: GameManager, private val obj: GameObject) {
+class TimeObservable(var duration: Int, private val obj: GameObject) {
 
     private var started = false
-    init {
-        game.registerTimeObservable(this)
-    }
+    val maxDuration = duration
+
     fun start() {
         started = true
     }
 
     fun update() {
-        duration --
-        if(duration == 0) obj.removed = true
+        if(started) duration --
+        if(duration <= 0) obj.removed = true
     }
 }

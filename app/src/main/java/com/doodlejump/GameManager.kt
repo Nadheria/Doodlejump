@@ -24,14 +24,12 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var genBuffer = 0F
     private lateinit var thread: Thread
 
-    private var timeObservables = arrayListOf<TimeObservable>()
-
     var score = 0F
     lateinit var canvas: Canvas
 
     companion object {
         const val TIME_CONSTANT = 0.5F
-        const val DENSITY = 0.5F
+        const val DENSITY = 0.0F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
         const val HEIGHT = 1584f
@@ -42,7 +40,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
         objects.add(OneUsePlatform(Vector(500F, 1100F)))
-        objects.add(BasePlatform(Vector(500F, 1500F)))
+        objects.add(DurationPlatform(Vector(500F, 1500F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
@@ -65,13 +63,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             player.checkCollisions(objects)
 
             addStack.forEach { objects.add(it) }; addStack.clear()
-            timeObservables.forEach { it.update() }
             holder.unlockCanvasAndPost(canvas)
         }
-    }
-
-    fun registerTimeObservable(obs: TimeObservable) {
-        timeObservables.add(obs)
     }
 
     override fun run() {
