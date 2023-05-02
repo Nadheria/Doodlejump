@@ -45,7 +45,6 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
 
     fun die() {
         acceleration.y = 0F
-        speed.y = -50F
         speed.x = 0F
         alive = false
     }

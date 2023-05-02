@@ -11,8 +11,8 @@ class Monster(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.mon
     override fun whenHit(player: Player) {
         if(player.speed.y < 0 ) removed = true
         player.rebound()
-        if(player.speed.y > 0)
-        player.die() // probl
+        if(player.speed.y > 0) player.speed.y = -100F
+        player.die()
     }
 
 
