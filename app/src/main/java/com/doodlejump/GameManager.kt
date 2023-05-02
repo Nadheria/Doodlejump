@@ -50,7 +50,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(MovingPlatform(Vector(500F, 1800F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
-        objects.add(Monster(Vector(700F , 700F )))
+        objects.add(Monster(Vector(900F , 700F )))
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
