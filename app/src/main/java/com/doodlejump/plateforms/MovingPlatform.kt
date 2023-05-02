@@ -12,7 +12,7 @@ class MovingPlatform(iPos: Vector): Platform(iPos, R.drawable.movingplateform), 
     }
 
     override fun update(game: GameManager) {
-        if(pos.x > game.width - size.x) direction = -1
+        if(pos.x > game.width - 3 * size.x) direction = -1
         if(pos.x < 0) direction = 1
         move(Vector( direction * PLATEFORM_SPEED, 0F))
     }

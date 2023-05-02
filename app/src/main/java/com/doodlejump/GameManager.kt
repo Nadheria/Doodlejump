@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.doodlejump.boosts.Spring
+import com.doodlejump.boosts.SpringBoard
 import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
@@ -18,18 +20,18 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var player = Player(Vector(400F, 10F))
     private var scorePaint = Paint()
-    private var genStep = 2 * Platform.size.y
+    private var genStep = 4 * Platform.size.y
     private var genBuffer = 0F
     private lateinit var thread: Thread
 
     var score = 0F
+    var player = Player(Vector(400F, 10F))
     lateinit var canvas: Canvas
 
     companion object {
         const val TIME_CONSTANT = 0.5F
-        const val DENSITY = 0.0F
+        const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
         const val HEIGHT = 1584f
@@ -39,8 +41,10 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
+        objects.add(SpringBoard(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
         objects.add(OneUsePlatform(Vector(500F, 1100F)))
         objects.add(DurationPlatform(Vector(500F, 1500F)))
+        objects.add(MovingPlatform(Vector(500F, 1800F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
         backgroundPaint.color = Color.WHITE
@@ -97,11 +101,23 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if(player.alive) score += amount * SCORE_MULTIPLIER
     }
 
+    fun generatePlateform(x: Float, y: Float) {
+        var r = Random.nextFloat() * 100
+        if(0 < r && r < 5f) addStack.add(MovingPlatform(Vector(x, y)))
+        else if(5 < r && r < 10) addStack.add(OneUsePlatform(Vector(x, y)))
+        else if(10 < r && r < 15) addStack.add(DurationPlatform(Vector(x, y)))
+        else {
+            addStack.add(BasePlatform(Vector(x, y)))
+            if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
+            if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
+        }
+    }
+
     fun moveObjects(amount: Float) {
         // Generation of the new plateforms
         genBuffer += amount
         for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
-            addStack.add(BasePlatform(Vector(Random.nextFloat() * WIDTH, genBuffer / i + HEIGHT)))
+            generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genBuffer / i + HEIGHT)
             genBuffer -= genStep
         }
 
