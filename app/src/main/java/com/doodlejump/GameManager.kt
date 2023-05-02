@@ -44,7 +44,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
-        objects.add(Jetpack(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
+       // objects.add(Jetpack(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
         objects.add(OneUsePlatform(Vector(500F, 1100F)))
         objects.add(DurationPlatform(Vector(500F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 1800F)))
@@ -115,6 +115,10 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
             if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
         }
+    }
+    fun generateMonsters(x: Float, y: Float) {
+        var r = Random.nextFloat() * 10
+        if(0 < r && r < 5f) addStack.add(Monster(Vector(x, y)))
     }
 
     fun moveObjects(amount: Float) {

@@ -1,6 +1,8 @@
 package com.doodlejump
 
 import android.graphics.*
+import java.lang.System.exit
+import kotlin.system.exitProcess
 
 class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0, R.drawable.player), IUpdate {
 
@@ -44,9 +46,10 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun die() {
+        //exitProcess(0)
         acceleration.y = 0F
         speed.x = 0F
-        //alive = false
+        alive = false
     }
 
     fun checkCollisions(objects: ArrayList<GameObject>) {
