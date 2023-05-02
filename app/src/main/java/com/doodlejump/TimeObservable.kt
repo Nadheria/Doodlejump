@@ -1,8 +1,10 @@
 package com.doodlejump
 
+import android.util.Log
+
 class TimeObservable(var duration: Int, private val obj: GameObject) {
 
-    private var started = false
+    var started = false
     val maxDuration = duration
 
     fun start() {
@@ -10,6 +12,7 @@ class TimeObservable(var duration: Int, private val obj: GameObject) {
     }
 
     fun update() {
+        if(started) Log.d("", "$duration")
         if(started) duration --
         if(duration <= 0) obj.removed = true
     }

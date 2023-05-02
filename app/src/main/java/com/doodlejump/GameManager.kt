@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.doodlejump.boosts.Jetpack
 import com.doodlejump.boosts.Spring
 import com.doodlejump.boosts.SpringBoard
 import com.doodlejump.plateforms.*
@@ -41,7 +42,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         objects.add(BasePlatform(Vector(500F, 300F)))
-        objects.add(SpringBoard(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
+        objects.add(Jetpack(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
         objects.add(OneUsePlatform(Vector(500F, 1100F)))
         objects.add(DurationPlatform(Vector(500F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 1800F)))
