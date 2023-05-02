@@ -8,7 +8,7 @@ import com.doodlejump.*
 
 class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate {
 
-    private var obs = TimeObservable(1000, this)
+    private var obs = TimeObservable(100, this)
     private var playerResource: Bitmap? = null
 
     companion object {

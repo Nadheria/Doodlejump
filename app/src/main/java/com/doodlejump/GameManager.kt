@@ -70,7 +70,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             player.draw(this)
             player.checkCollisions(objects)
 
-            addStack.forEach { objects.add(it) }; addStack.clear()
+            objects.addAll(addStack); addStack.clear()
             holder.unlockCanvasAndPost(canvas)
         }
     }
