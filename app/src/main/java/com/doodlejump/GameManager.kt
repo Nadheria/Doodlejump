@@ -12,6 +12,8 @@ import com.doodlejump.boosts.SpringBoard
 import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
+import com.doodlejump.monsters.Monster
+
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
     SurfaceHolder.Callback, Runnable  {
@@ -48,6 +50,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(MovingPlatform(Vector(500F, 1800F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
+        objects.add(Monster(Vector(700F , 700F )))
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
