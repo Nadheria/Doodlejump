@@ -36,8 +36,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var canvas: Canvas
 
     companion object {
-        const val TIME_CONSTANT = 0.4F
-        const val MS_PER_TICK = 33.0
+        const val TIME_CONSTANT = 0.5F
+        const val MS_PER_TICK = 25.0
         const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
@@ -47,13 +47,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     init {
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
-        objects.add(BasePlatform(Vector(500F, 300F)))
-       // objects.add(Jetpack(Vector(500F + Platform.size.x / 2 - SpringBoard.size.x / 2, 300F + SpringBoard.size.y)))
-        objects.add(OneUsePlatform(Vector(500F, 1100F)))
-        objects.add(DurationPlatform(Vector(500F, 1500F)))
-        objects.add(MovingPlatform(Vector(500F, 1800F)))
-        objects.add(FalsePlatform(Vector(200F, 1500F)))
-        objects.add(MovingPlatform(Vector(500F, 800F)))
+        for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(genStep * i, Random.nextFloat() * (WIDTH - Platform.size.x))
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
@@ -151,5 +145,4 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
     }
-
 }
