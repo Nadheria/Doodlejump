@@ -42,11 +42,10 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     }
 
     fun rebound() {
-        if(speed.y < 0) speed.y = JUMP_SPEED
+        if(speed.y < 0 && alive) speed.y = JUMP_SPEED
     }
 
     fun die() {
-        //exitProcess(0)
         acceleration.y = 0F
         speed.x = 0F
         alive = false
