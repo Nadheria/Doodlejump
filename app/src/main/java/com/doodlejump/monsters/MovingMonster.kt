@@ -6,7 +6,7 @@ import com.doodlejump.R
 import com.doodlejump.Vector
 
 
-class MovingMonster(iPos: Vector): Monster(iPos, R.drawable.movingmonster), IUpdate {
+class MovingMonster(iPos: Vector): Monster(iPos, Vector(187f, 121f), R.drawable.movingmonster), IUpdate {
 
 
     private var direction : Byte = 1

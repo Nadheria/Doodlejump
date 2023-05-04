@@ -36,7 +36,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var canvas: Canvas
 
     companion object {
-        const val TIME_CONSTANT = 0.5F
+        const val TIME_CONSTANT = 0.3F
         const val MS_PER_TICK = 25.0
         const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
@@ -47,7 +47,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     init {
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
-        for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(genStep * i, Random.nextFloat() * (WIDTH - Platform.size.x))
+        for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
@@ -108,7 +108,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if(0 < r && r < 5f) addStack.add(MovingPlatform(Vector(x, y)))
         else if(5 < r && r < 10) addStack.add(OneUsePlatform(Vector(x, y)))
         else if(10 < r && r < 15) addStack.add(DurationPlatform(Vector(x, y)))
-        else if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
         else if(20 < r && r < 25) addStack.add(MovingMonster(Vector(x, y)))
         else {
             addStack.add(BasePlatform(Vector(x, y)))

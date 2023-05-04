@@ -5,9 +5,9 @@ import android.graphics.Paint
 import com.doodlejump.*
 import com.doodlejump.Player
 
-open class Monster(pos0: Vector, type: Int): GameObject(Vector(217F, 144F), pos0, type){
+open class Monster(pos0: Vector, iSize: Vector, type: Int): GameObject(iSize, pos0, type){
 
-    constructor(pos0: Vector) : this(pos0, R.drawable.monster)
+    constructor(pos0: Vector) : this(pos0, Vector(217F, 144F), R.drawable.monster)
 
     override fun whenHit(player: Player) {
         if(player.speed.y < 0 ) {
