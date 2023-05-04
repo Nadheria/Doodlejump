@@ -15,6 +15,7 @@ import kotlin.random.Random
 import com.doodlejump.monsters.Monster
 import kotlinx.coroutines.delay
 import java.lang.Thread.sleep
+import com.doodlejump.monsters.*
 
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
@@ -114,11 +115,13 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if(0 < r && r < 5f) addStack.add(MovingPlatform(Vector(x, y)))
         else if(5 < r && r < 10) addStack.add(OneUsePlatform(Vector(x, y)))
         else if(10 < r && r < 15) addStack.add(DurationPlatform(Vector(x, y)))
+        else if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
+        else if(20 < r && r < 25) addStack.add(MovingMonster(Vector(x, y)))
         else {
             addStack.add(BasePlatform(Vector(x, y)))
-            if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
-            if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
-            if(25 < r && r < 30) addStack.add(Monster(Vector(x, y)))
+            if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y)))
+            if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
+            if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
         }
     }
 
