@@ -2,7 +2,7 @@ package com.doodlejump.boosts
 
 import com.doodlejump.*
 
-class Spring(iPos: Vector): GameObject(size, iPos, R.drawable.spring) {
+class Spring(iPos: Vector): GameObject(size, iPos, R.drawable.spring), IJumpable {
 
     companion object {
         val size = Vector(55F, 55F)

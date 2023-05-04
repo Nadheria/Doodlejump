@@ -1,11 +1,8 @@
 package com.doodlejump.boosts
 
-import com.doodlejump.GameObject
-import com.doodlejump.Player
-import com.doodlejump.R
-import com.doodlejump.Vector
+import com.doodlejump.*
 
-class SpringBoard(iPos: Vector): GameObject(size, iPos, R.drawable.springboard) {
+class SpringBoard(iPos: Vector): GameObject(size, iPos, R.drawable.springboard), IJumpable {
 
     companion object {
         val size = Vector(140F, 50F)

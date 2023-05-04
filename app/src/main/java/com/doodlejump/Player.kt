@@ -1,13 +1,20 @@
 package com.doodlejump
 
 import android.graphics.*
+import android.util.Log
 
-class Player(pos0: Vector): GameObject(Vector(311F / 2f, 272F / 2f), pos0, R.drawable.player), IUpdate {
+class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.player), IUpdate {
 
 
     var acceleration = Vector(0F, GRAVITY)
     var speed = Vector(0F, 0F)
     var alive = true
+    var jumpBox = hitbox
+    var jumpPaint = Paint()
+
+    init {
+        jumpPaint.color = Color.RED
+    }
 
     companion object {
         const val JUMP_SPEED = 100F
@@ -30,7 +37,10 @@ class Player(pos0: Vector): GameObject(Vector(311F / 2f, 272F / 2f), pos0, R.dra
         var wd = game.width / GameManager.WIDTH
         var hd = game.height / GameManager.HEIGHT
         if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
-        ressource?.let { game.canvas.drawBitmap(it.flip(if(speed.x > 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x * wd, (GameManager.HEIGHT - pos.y - size.y) * hd, Paint()) }
+        ressource?.let { game.canvas.drawBitmap(it.flip(if(speed.x >= 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x * wd, (GameManager.HEIGHT - pos.y) * hd, Paint()) }
+
+        // game.canvas.drawRect(jumpBox, jumpPaint)
+        // game.canvas.drawRect(hitbox, hitboxPaint)
     }
 
     private fun Bitmap.flip(x: Float, y: Float, cx: Float, cy: Float): Bitmap {
@@ -49,7 +59,13 @@ class Player(pos0: Vector): GameObject(Vector(311F / 2f, 272F / 2f), pos0, R.dra
     }
 
     fun checkCollisions(objects: ArrayList<GameObject>) {
-        if(alive) objects.forEach { if(it.isHit(hitbox)) it.whenHit(this) }
+        jumpBox = if(speed.x >= 0) RectF(hitbox.left, hitbox.top, hitbox.right - 40f, hitbox.bottom - 115f)
+        else RectF(hitbox.left + 40f, hitbox.top, hitbox.right, hitbox.bottom - 115f)
+
+        if(alive) objects.forEach {
+            if(it.isHit(if(it is IJumpable) jumpBox else hitbox))
+                it.whenHit(this)
+        }
     }
 
     /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin
