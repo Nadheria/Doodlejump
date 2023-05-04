@@ -119,11 +119,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             addStack.add(BasePlatform(Vector(x, y)))
             if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
             if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
+            if(25 < r && r < 30) addStack.add(Monster(Vector(x, y)))
         }
-    }
-    fun generateMonsters(x: Float, y: Float) {
-        var r = Random.nextFloat() * 10
-        if(0 < r && r < 5f) addStack.add(Monster(Vector(x, y)))
     }
 
     fun moveObjects(amount: Float) {
