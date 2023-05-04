@@ -27,7 +27,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
     private var scorePaint = Paint()
-    private var genStep = 4 * Platform.size.y
+    private var genStep = 3 * Platform.size.y
     private var genBuffer = 0F
     private lateinit var thread: Thread
 
@@ -36,8 +36,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var canvas: Canvas
 
     companion object {
-        const val TIME_CONSTANT = 0.5F
-        const val MS_PER_TICK = 25.0
+        const val TIME_CONSTANT = 0.4F
+        const val MS_PER_TICK = 33.0
         const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
@@ -54,7 +54,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(MovingPlatform(Vector(500F, 1800F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
-        objects.add(Monster(Vector(900F , 700F )))
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
@@ -152,4 +151,5 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
     }
+
 }
