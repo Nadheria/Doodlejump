@@ -51,7 +51,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         objects.add(MovingPlatform(Vector(500F, 1800F)))
         objects.add(FalsePlatform(Vector(200F, 1500F)))
         objects.add(MovingPlatform(Vector(500F, 800F)))
-        objects.add(Monster(Vector(900F , 700F )))
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
@@ -64,9 +63,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
             var ticks = elapsedTime / TICK_MS
             objects.forEach {
-                if(it is IUpdate)
-                    for(i in 1..floor(ticks).toInt())
-                        it.update(this)
+                if(it is IUpdate) it.update(this)
                 it.draw(this)
             }
             objects.removeAll{ it.removed }
@@ -114,12 +111,13 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if(0 < r && r < 5f) addStack.add(MovingPlatform(Vector(x, y)))
         else if(5 < r && r < 10) addStack.add(OneUsePlatform(Vector(x, y)))
         else if(10 < r && r < 15) addStack.add(DurationPlatform(Vector(x, y)))
+        else if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
+        else if(20 < r && r < 25) addStack.add(MovingMonster(Vector(x, y)))
         else {
             addStack.add(BasePlatform(Vector(x, y)))
-            if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
-            if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
-            if(25 < r && r < 30) addStack.add(Monster(Vector(x, y), R.drawable.movingmonster))
-            if(30 < r && r < 35) addStack.add(MovingMonster(Vector(x, y)))
+            if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y)))
+            if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
+            if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
         }
     }
 
