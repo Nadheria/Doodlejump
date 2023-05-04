@@ -13,6 +13,8 @@ import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
 import com.doodlejump.monsters.Monster
+import kotlinx.coroutines.delay
+import java.lang.Thread.sleep
 
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
@@ -34,8 +36,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     companion object {
         const val TIME_CONSTANT = 0.5F
-        const val TICK_SECOND = 60.0
-        const val TICK_MS = 1000 / TICK_SECOND
+        const val MS_PER_TICK = 25.0
         const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
         const val WIDTH = 1074f
@@ -57,17 +58,14 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
 
-    private fun gameLoop(elapsedTime: Double) {
+    private fun gameLoop() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
             canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
 
-            var ticks = elapsedTime / TICK_MS
             objects.forEach {
-                if(it is IUpdate)
-                    for(i in 1..floor(ticks).toInt())
-                        it.update(this)
+                if(it is IUpdate) it.update(this)
                 it.draw(this)
             }
             objects.removeAll{ it.removed }
@@ -85,7 +83,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         while (drawing) {
             val currentTime = System.currentTimeMillis()
             var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
-            gameLoop(elapsedTimeMS)
+            gameLoop()
+            if (elapsedTimeMS < MS_PER_TICK) sleep((MS_PER_TICK - elapsedTimeMS).toLong())
             totalElapsedTime += elapsedTimeMS / 1000.0
             previousFrameTime = currentTime
         }
