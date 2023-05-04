@@ -9,7 +9,7 @@ import com.doodlejump.Vector
 abstract class Platform(var pos0: Vector, var type : Int): GameObject(size, pos0, type) {
 
     companion object {
-        val size = Vector(224F, 60F)
+        val size = Vector(150F, 40F)
     }
 
     override fun isHit(box: RectF): Boolean {

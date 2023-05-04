@@ -1,10 +1,8 @@
 package com.doodlejump
 
 import android.graphics.*
-import java.lang.System.exit
-import kotlin.system.exitProcess
 
-class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0, R.drawable.player), IUpdate {
+class Player(pos0: Vector): GameObject(Vector(311F / 2f, 272F / 2f), pos0, R.drawable.player), IUpdate {
 
 
     var acceleration = Vector(0F, GRAVITY)
@@ -12,7 +10,6 @@ class Player(pos0: Vector): GameObject(Vector(311F / SCALE, 272F / SCALE), pos0,
     var alive = true
 
     companion object {
-        const val SCALE = 1.5f
         const val JUMP_SPEED = 100F
         const val GRAVITY = -10F
         const val JUMP_HEIGHT = JUMP_SPEED * JUMP_SPEED / (-2 * GRAVITY)
