@@ -6,13 +6,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.doodlejump.boosts.Jetpack
 import com.doodlejump.boosts.Spring
 import com.doodlejump.boosts.SpringBoard
 import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
-import com.doodlejump.monsters.Monster
+import com.doodlejump.monsters.*
 
 
 class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
@@ -34,7 +33,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     companion object {
         const val TIME_CONSTANT = 0.5F
-        const val TICK_SECOND = 60.0
+        const val TICK_SECOND = 50.0
         const val TICK_MS = 1000 / TICK_SECOND
         const val DENSITY = 0.7F
         const val SCORE_MULTIPLIER = 0.1F
@@ -119,7 +118,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             addStack.add(BasePlatform(Vector(x, y)))
             if(15 < r && r < 20) addStack.add(Spring(Vector(x, y + Spring.size.y)))
             if(20 < r && r < 25) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
-            if(25 < r && r < 30) addStack.add(Monster(Vector(x, y)))
+            if(25 < r && r < 30) addStack.add(Monster(Vector(x, y), R.drawable.movingmonster))
+            if(30 < r && r < 35) addStack.add(MovingMonster(Vector(x, y)))
         }
     }
 
