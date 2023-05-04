@@ -48,6 +48,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
         for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
+        addStack.removeAll{it is Monster}
         backgroundPaint.color = Color.WHITE
         Log.d("", "${Player.JUMP_HEIGHT}")
     }
@@ -111,8 +112,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         else if(20 < r && r < 25) addStack.add(MovingMonster(Vector(x, y)))
         else {
             addStack.add(BasePlatform(Vector(x, y)))
-            if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y)))
-            if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y)))
+            if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y/2)))
+            if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y/2)))
             if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
         }
     }
