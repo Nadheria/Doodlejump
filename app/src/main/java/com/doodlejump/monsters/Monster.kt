@@ -13,10 +13,10 @@ class Monster(pos0: Vector): GameObject(Vector(311F, 272F), pos0, R.drawable.mon
             removed = true
             player.rebound()
         }
-        //if(player.speed.y > 0) {
-          //  player.die()
-            //player.speed.y = -50F
-        //}
+        if(player.speed.y > 0) {
+            player.die()
+            player.speed.y = -50F
+        }
     }
 
 
