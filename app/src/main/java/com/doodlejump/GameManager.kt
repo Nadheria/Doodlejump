@@ -114,7 +114,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             addStack.add(BasePlatform(Vector(x, y)))
             if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y/2)))
             if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y/2)))
-            if(15 < r && r < 20) addStack.add(Monster(Vector(x, y)))
+            if(15 < r && r < 20) addStack.add(Monster(Vector(x , y + Monster.size.y * 5 / 6)))
+            if(35 < r && r < 40) addStack.add(Jetpack(Vector(x + Platform.size.x / 2 - Jetpack.size.x / 2, y + Jetpack.size.y/2)))
         }
     }
 

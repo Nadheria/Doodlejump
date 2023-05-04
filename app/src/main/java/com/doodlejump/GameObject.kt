@@ -2,7 +2,7 @@ package com.doodlejump
 
 import android.graphics.*
 
-abstract class GameObject(val size: Vector, var pos: Vector, var sprite: Int) {
+abstract class GameObject(var size: Vector, var pos: Vector, var sprite: Int) {
 
     var ressource: Bitmap? = null
     var hitbox = RectF(0F, 0F, 0F, 0F)

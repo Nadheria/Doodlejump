@@ -9,12 +9,9 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
     var acceleration = Vector(0F, GRAVITY)
     var speed = Vector(0F, 0F)
     var alive = true
-    var jumpBox = hitbox
-    var jumpPaint = Paint()
-
-    init {
-        jumpPaint.color = Color.RED
-    }
+    var hitable = true
+    private var jumpBox = hitbox
+    // var jumpPaint = Paint()
 
     companion object {
         const val JUMP_SPEED = 100F
@@ -24,7 +21,7 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
     override fun update(game: GameManager) {
         speed += acceleration * GameManager.TIME_CONSTANT
         move(speed * GameManager.TIME_CONSTANT)
-        if(pos.y < 0) if(game.score > 0) die() else rebound()
+        if(pos.y < size.y) if(game.score > 0) die() else rebound()
         if(pos.x < 0 - size.x) pos.x = GameManager.WIDTH
         if(pos.x > GameManager.WIDTH) pos.x = 0F
         if(pos.y > GameManager.HEIGHT / 2) {
@@ -59,6 +56,7 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
     }
 
     fun checkCollisions(objects: ArrayList<GameObject>) {
+        if(!hitable) return
         jumpBox = if(speed.x >= 0) RectF(hitbox.left, hitbox.top, hitbox.right - 40f, hitbox.bottom - 115f)
         else RectF(hitbox.left + 40f, hitbox.top, hitbox.right, hitbox.bottom - 115f)
 

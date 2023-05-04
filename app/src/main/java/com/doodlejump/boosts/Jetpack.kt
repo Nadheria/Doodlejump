@@ -12,12 +12,13 @@ class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate
     private var playerResource: Bitmap? = null
 
     companion object {
-        val size = Vector(100F, 135F)
+        val size = Vector(80F, 108F)
     }
 
     override fun whenHit(player: Player) {
         hitbox = RectF(0F, 0F, 0F, 0F)
         pos = Vector(-1000F, 1000F)
+        player.hitable = false
         obs.start()
     }
 
@@ -31,7 +32,11 @@ class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate
             var hd = game.height / GameManager.HEIGHT
             if(playerResource == null) playerResource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, R.drawable.jetpackplayer), (pl.size.x * wd).toInt(), (pl.size.y * hd).toInt(), false)
             pl.ressource = playerResource
-            if(obs.duration == 0) game.player.ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, game.player.sprite), (pl.size.x * wd).toInt(), (pl.size.y * hd).toInt(), false)
+            if(obs.duration == 0) {
+                game.player.ressource = Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(game.context.resources, game.player.sprite), (pl.size.x * wd).toInt(), (pl.size.y * hd).toInt(), false)
+                game.player.hitable = true
+            }
         }
     }
 }

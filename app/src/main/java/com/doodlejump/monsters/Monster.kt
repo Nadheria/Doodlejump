@@ -9,6 +9,10 @@ open class Monster(pos0: Vector, iSize: Vector, type: Int): GameObject(iSize, po
 
     constructor(pos0: Vector) : this(pos0, Vector(217F, 144F), R.drawable.monster)
 
+    companion object {
+        val size = Vector(217F, 144F)
+    }
+
     override fun whenHit(player: Player) {
         if(player.speed.y < 0 ) {
             removed = true
