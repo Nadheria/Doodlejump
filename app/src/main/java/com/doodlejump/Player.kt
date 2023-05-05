@@ -66,10 +66,6 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
         }
     }
 
-    /* Interface pour les objets when hit sachant que le joueur n'en a pas besoin
-    car la méthode permet de gérer les collisions avec le joueur (et peut être les monstres)
-    On pourrait donc peut être faire une interface living entity qui possède la méthode en question ?
-     */
     override fun whenHit(player: Player) {
         // Useless function due to inheritance
     }

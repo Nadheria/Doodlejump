@@ -13,7 +13,6 @@ import com.doodlejump.plateforms.*
 import kotlin.math.floor
 import kotlin.random.Random
 import com.doodlejump.monsters.Monster
-import kotlinx.coroutines.delay
 import java.lang.Thread.sleep
 import com.doodlejump.monsters.*
 
@@ -34,6 +33,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     var score = 0F
     var player = Player(Vector(400F, 10F))
     lateinit var canvas: Canvas
+    lateinit var activity: MainActivity
 
     companion object {
         const val TIME_CONSTANT = 0.3F
@@ -50,7 +50,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
         addStack.removeAll{it is Monster}
         backgroundPaint.color = Color.WHITE
-        Log.d("", "${Player.JUMP_HEIGHT}")
     }
 
     private fun gameLoop() {
@@ -71,6 +70,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             objects.addAll(addStack); addStack.clear()
             holder.unlockCanvasAndPost(canvas)
         }
+        if(!player.alive) activity.endScreen(score.toInt())
     }
 
     override fun run() {
@@ -115,7 +115,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
             if(25 < r && r < 30) addStack.add(Spring(Vector(x, y + Spring.size.y/2)))
             if(30 < r && r < 35) addStack.add(SpringBoard(Vector(x + Platform.size.x / 2 - SpringBoard.size.x / 2, y + SpringBoard.size.y/2)))
             if(15 < r && r < 20) addStack.add(Monster(Vector(x , y + Monster.size.y * 5 / 6)))
-            if(35 < r && r < 100) addStack.add(Jetpack(Vector(x + Platform.size.x / 2 - Jetpack.size.x / 2, y + Jetpack.size.y/2)))
+            if(35 < r && r < 40) addStack.add(Jetpack(Vector(x + Platform.size.x / 2 - Jetpack.size.x / 2, y + Jetpack.size.y/2)))
         }
     }
 
