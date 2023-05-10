@@ -3,7 +3,6 @@ package com.doodlejump
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.doodlejump.boosts.Jetpack
@@ -17,8 +16,7 @@ import java.lang.Thread.sleep
 import com.doodlejump.monsters.*
 
 
-class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr),
-    SurfaceHolder.Callback, Runnable  {
+class GameManager @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), Runnable  {
 
     private var objects = arrayListOf<GameObject>()
     private var addStack = arrayListOf<GameObject>()
@@ -47,7 +45,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     init {
         scorePaint.color = Color.BLACK
         scorePaint.textSize = 100F
-        for (i in 1..(HEIGHT / genStep).toInt()) generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
+        for (i in 1..(HEIGHT / genStep).toInt()) generatePlatform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
         addStack.removeAll{it is Monster}
         backgroundPaint.color = Color.WHITE
     }
@@ -100,11 +98,11 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         if(player.alive) player.speed.x = deg / 10
     }
 
-    fun changeScore(amount: Float) {
+    private fun changeScore(amount: Float) {
         if(player.alive) score += amount * SCORE_MULTIPLIER
     }
 
-    fun generatePlateform(x: Float, y: Float) {
+    private fun generatePlatform(x: Float, y: Float) {
         var r = Random.nextFloat() * 100
         if(0 < r && r < 5f) addStack.add(MovingPlatform(Vector(x, y)))
         else if(5 < r && r < 10) addStack.add(OneUsePlatform(Vector(x, y)))
@@ -123,7 +121,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         // Generation of the new plateforms
         genBuffer += amount
         for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
-            generatePlateform(Random.nextFloat() * (WIDTH - Platform.size.x), genBuffer / i + HEIGHT)
+            generatePlatform(Random.nextFloat() * (WIDTH - Platform.size.x), genBuffer / i + HEIGHT)
             genBuffer -= genStep
         }
 
@@ -135,15 +133,4 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         }
     }
 
-    override fun surfaceCreated(p0: SurfaceHolder) {
-
-    }
-
-    override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
-
-    }
-
-    override fun surfaceDestroyed(p0: SurfaceHolder) {
-
-    }
 }
