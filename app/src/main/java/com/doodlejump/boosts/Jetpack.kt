@@ -9,7 +9,6 @@ import com.doodlejump.*
 class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate {
 
     private var obs = TimeObservable(100, this)
-    private var playerResource: Bitmap? = null
 
     companion object {
         val size = Vector(80F, 108F)
@@ -18,27 +17,16 @@ class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate
     override fun whenHit(player: Player) {
         hitbox = RectF(0F, 0F, 0F, 0F)
         pos = Vector(-1000F, 1000F)
-        player.size = Vector(190F, 188F)
-        player.hitable = false
         obs.start()
     }
 
     override fun update(game: GameManager) {
         obs.update()
         if(obs.started) {
-            var pl = game.player
             pos.y = 1000F
-            pl.speed.y = 100F
-            var wd = game.width / GameManager.WIDTH
-            var hd = game.height / GameManager.HEIGHT
-            if(playerResource == null) playerResource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, R.drawable.jetpackplayer), (pl.size.x * wd).toInt(), (pl.size.y * hd).toInt(), false)
-            pl.ressource = playerResource
-            if(obs.duration == 0) {
-                game.player.size = Vector(136F, 136F)
-                game.player.ressource = Bitmap.createScaledBitmap(
-                    BitmapFactory.decodeResource(game.context.resources, game.player.sprite), (pl.size.x * wd).toInt(), (pl.size.y * hd).toInt(), false)
-                game.player.hitable = true
-            }
+            game.player.speed.y = 100F
+            if(obs.duration == obs.maxDuration - 1) game.player.changeJetpack(true, game)
+            if(obs.duration == 0) game.player.changeJetpack(false, game)
         }
     }
 }

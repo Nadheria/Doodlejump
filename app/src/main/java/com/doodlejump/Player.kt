@@ -1,7 +1,6 @@
 package com.doodlejump
 
 import android.graphics.*
-import android.util.Log
 
 class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.player), IUpdate {
 
@@ -11,6 +10,7 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
     var alive = true
     var hitable = true
     private var jumpBox = hitbox
+
     // var jumpPaint = Paint()
 
     companion object {
@@ -63,6 +63,20 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
         if(alive) objects.forEach {
             if(it.isHit(if(it is IJumpable) jumpBox else hitbox))
                 it.whenHit(this)
+        }
+    }
+
+    fun changeJetpack(enabled: Boolean, game: GameManager) {
+        var wd = game.width / GameManager.WIDTH
+        var hd = game.height / GameManager.HEIGHT
+        if(enabled) {
+            size = Vector(190F, 188F)
+            ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, R.drawable.jetpackplayer), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
+            hitable = false
+        } else {
+            size = Vector(136F, 136F)
+            ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
+            hitable = true
         }
     }
 

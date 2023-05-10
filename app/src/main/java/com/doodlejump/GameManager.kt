@@ -131,7 +131,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         changeScore(amount)
         objects.forEach {
             it.move(Vector(0F, -amount))
-            if (it.pos.y < 0) it.removed = true
+            it.checkRemove()
         }
     }
 

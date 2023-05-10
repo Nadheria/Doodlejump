@@ -2,12 +2,13 @@ package com.doodlejump
 
 import android.graphics.*
 
-abstract class GameObject(var size: Vector, var pos: Vector, var sprite: Int) {
+abstract class GameObject(protected var size: Vector, protected var pos: Vector, protected val sprite: Int) {
 
-    var ressource: Bitmap? = null
-    var hitbox = RectF(0F, 0F, 0F, 0F)
     var removed = false
-    var paint = Paint()
+
+    protected var hitbox = RectF(0F, 0F, 0F, 0F)
+    protected var paint = Paint()
+    protected var ressource: Bitmap? = null
 
     var hitboxPaint = Paint()
 
@@ -24,7 +25,10 @@ abstract class GameObject(var size: Vector, var pos: Vector, var sprite: Int) {
         var hd = game.height / GameManager.HEIGHT
         if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
         ressource?.let { game.canvas.drawBitmap(it, pos.x * wd, (GameManager.HEIGHT - pos.y) * hd, paint) }
-        //game.canvas.drawRect(hitbox, hitboxPaint)
+    }
+
+    fun checkRemove() {
+        if(pos.y < 0) removed = true
     }
 
     fun move(inc: Vector) {
