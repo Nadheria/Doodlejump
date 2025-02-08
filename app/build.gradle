@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.doodlejump'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.doodlejump"
         minSdk 24
-        targetSdk 35
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 

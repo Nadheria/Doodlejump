@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         game.holder.setFormat(PixelFormat.TRANSPARENT)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager;
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)!!
     }
 
     override fun onResume() {

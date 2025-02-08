@@ -1,12 +1,15 @@
 package com.doodlejump.boosts
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.RectF
-import android.util.Log
-import com.doodlejump.*
+import com.doodlejump.GameManager
+import com.doodlejump.GameObject
+import com.doodlejump.IUpdate
+import com.doodlejump.Player
+import com.doodlejump.R
+import com.doodlejump.TimeObservable
+import com.doodlejump.Vector
 
-class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate {
+class Jetpack(iPos: Vector) : GameObject(size, iPos, R.drawable.jetpack), IUpdate {
 
     private var obs = TimeObservable(100, this)
 
@@ -22,11 +25,11 @@ class Jetpack(iPos: Vector): GameObject(size, iPos, R.drawable.jetpack), IUpdate
 
     override fun update(game: GameManager) {
         obs.update()
-        if(obs.started) {
+        if (obs.started) {
             pos.y = 1000F
             game.player.speed.y = 100F
-            if(obs.duration == obs.maxDuration - 1) game.player.changeJetpack(true, game)
-            if(obs.duration == 0) game.player.changeJetpack(false, game)
+            if (obs.duration == obs.maxDuration - 1) game.player.changeJetpack(true, game)
+            if (obs.duration == 0) game.player.changeJetpack(false, game)
         }
     }
 }
