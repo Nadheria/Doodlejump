@@ -121,7 +121,7 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     private fun changeScore(amount: Float) {
         if(player.alive) score += amount * SCORE_MULTIPLIER
-        increaseScore(amount.toInt())
+        increaseScore(amount.toInt()/9)
     }
 
     private fun generatePlatform(x: Float, y: Float) {
@@ -158,19 +158,6 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         }
     }
 
-    fun gameOver() {
-        val highScore = sharedPreferences.getInt(HIGH_SCORE_KEY, 0)
-        if (currentScore > highScore) {
-            sharedPreferences.edit().putInt(HIGH_SCORE_KEY, currentScore).apply()
-        }
-
-        // Pass the high score to ReplayActivity
-        val intent = Intent(context, ReplayActivity::class.java).apply {
-            putExtra("currentScore", currentScore)
-            putExtra("highScore", sharedPreferences.getInt(HIGH_SCORE_KEY, 0))
-        }
-        context.startActivity(intent)
-    }
 
 
     fun increaseScore(points: Int) {
