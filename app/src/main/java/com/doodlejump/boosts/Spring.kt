@@ -9,6 +9,6 @@ class Spring(iPos: Vector): GameObject(size, iPos, R.drawable.spring), IJumpable
     }
 
     override fun whenHit(player: Player) {
-        if(player.speed.y < 0F) player.speed.y += 200F
+        if(player.speed.y < 0F) player.speed.y += 150F
     }
 }

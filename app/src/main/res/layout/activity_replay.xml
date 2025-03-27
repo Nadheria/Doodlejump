@@ -4,28 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReplayActivity">
+    android:background="@drawable/background"
+    android:visibility="visible">
+
 
     <ImageView
-        android:id="@+id/replay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/game_over"
+        app:layout_constraintBottom_toTopOf="@+id/playerScore"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/replay" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
 
     <TextView
-        android:id="@+id/score"
-        android:layout_width="145dp"
-        android:layout_height="94dp"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="28dp"
-        android:text="0"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/playerScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/jersey25_regular"
+        android:text="Your Score: 2134 "
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/playAgain"
+        app:layout_constraintEnd_toEndOf="@+id/playAgain"
+        app:layout_constraintStart_toStartOf="@+id/playAgain"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/highScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/jersey25_regular"
+        android:text="High Score: 345678"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@+id/playerScore"
+        app:layout_constraintStart_toStartOf="@+id/playerScore"
+        app:layout_constraintTop_toBottomOf="@+id/playerScore" />
+
+    <ImageView
+        android:id="@+id/doodleFall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playerScore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/doodle_fall"
+        app:layout_constraintEnd_toEndOf="@+id/highScore"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="@+id/highScore"
+        app:layout_constraintTop_toBottomOf="@+id/highScore" />
+
+    <ImageView
+        android:id="@+id/playAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playerScore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="212dp"
+        android:src="@drawable/play_again_ic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playAgain"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/menu_ic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/playAgain"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toStartOf="@+id/playAgain"
+        app:layout_constraintTop_toBottomOf="@+id/playAgain"
+        app:layout_constraintVertical_bias="0.124" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

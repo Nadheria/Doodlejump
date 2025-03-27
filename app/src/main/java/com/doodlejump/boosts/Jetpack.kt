@@ -27,7 +27,7 @@ class Jetpack(iPos: Vector) : GameObject(size, iPos, R.drawable.jetpack), IUpdat
         obs.update()
         if (obs.started) {
             pos.y = 1000F
-            game.player.speed.y = 100F
+            game.player.speed.y = 60F
             if (obs.duration == obs.maxDuration - 1) game.player.changeJetpack(true, game)
             if (obs.duration == 0) game.player.changeJetpack(false, game)
         }

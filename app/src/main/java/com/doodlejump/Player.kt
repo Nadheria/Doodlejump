@@ -4,23 +4,36 @@ import android.graphics.*
 
 class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.player), IUpdate {
 
-
     var acceleration = Vector(0F, GRAVITY)
     var speed = Vector(0F, 0F)
     var alive = true
     var hitable = true
     private var jumpBox = hitbox
-
-    // var jumpPaint = Paint()
+    private var speedMultiplier = 1.0F // Speed multiplier that increases with score
 
     companion object {
-        const val JUMP_SPEED = 100F
-        const val GRAVITY = -10F
+        const val JUMP_SPEED = 70F
+        const val GRAVITY = -6F
         const val JUMP_HEIGHT = JUMP_SPEED * JUMP_SPEED / (-2 * GRAVITY)
     }
+
     override fun update(game: GameManager) {
-        speed += acceleration * GameManager.TIME_CONSTANT
-        move(speed * GameManager.TIME_CONSTANT)
+        // Increase speed multiplier based on score
+        when {
+            game.score >= 800 -> speedMultiplier = 1.4F
+            game.score >= 1400 -> speedMultiplier = 1.6F
+            game.score >= 2000 -> speedMultiplier = 1.8F
+            game.score >= 2500 -> speedMultiplier = 2.0F
+            game.score >= 3000 -> speedMultiplier = 2.2F
+            game.score >= 3500 -> speedMultiplier = 2.4F
+            game.score >= 4000 -> speedMultiplier = 2.6F
+            game.score >= 4500 -> speedMultiplier = 2.8F
+
+        }
+
+        speed += acceleration * GameManager.TIME_CONSTANT * speedMultiplier
+        move(speed * GameManager.TIME_CONSTANT * speedMultiplier)
+
         if(pos.y < size.y) if(game.score > 0) die() else rebound()
         if(pos.x < 0 - size.x) pos.x = GameManager.WIDTH
         if(pos.x > GameManager.WIDTH) pos.x = 0F
@@ -35,9 +48,6 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
         var hd = game.height / GameManager.HEIGHT
         if(ressource == null) ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, sprite), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
         ressource?.let { game.canvas.drawBitmap(it.flip(if(speed.x >= 0) 1f else -1f, 1f, it.width / 2f, it.height / 2f), pos.x * wd, (GameManager.HEIGHT - pos.y) * hd, Paint()) }
-
-        // game.canvas.drawRect(jumpBox, jumpPaint)
-        // game.canvas.drawRect(hitbox, hitboxPaint)
     }
 
     private fun Bitmap.flip(x: Float, y: Float, cx: Float, cy: Float): Bitmap {
@@ -46,7 +56,7 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
     }
 
     fun rebound() {
-        if(speed.y < 0 && alive) speed.y = JUMP_SPEED
+        if(speed.y < 0 && alive) speed.y = JUMP_SPEED * speedMultiplier
     }
 
     fun die() {
@@ -70,7 +80,7 @@ class Player(pos0: Vector): GameObject(Vector(136F, 136F), pos0, R.drawable.play
         var wd = game.width / GameManager.WIDTH
         var hd = game.height / GameManager.HEIGHT
         if(enabled) {
-            size = Vector(190F, 188F)
+            size = Vector(136F, 136F)
             ressource = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(game.context.resources, R.drawable.jetpackplayer), (size.x * wd).toInt(), (size.y * hd).toInt(), false)
             hitable = false
         } else {

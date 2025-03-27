@@ -1,6 +1,8 @@
 package com.doodlejump
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.SurfaceHolder
@@ -23,15 +25,25 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     private var drawing = true;
     private var totalElapsedTime = 0.0
     private var backgroundPaint = Paint()
-    private var scorePaint = Paint()
+//    private var scorePaint = Paint()
     private var genStep = 3 * Platform.size.y
     private var genBuffer = 0F
     private lateinit var thread: Thread
+
+    private val PREFS_NAME = "GamePrefs"
+    private val HIGH_SCORE_KEY = "HighScore"
+
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    var currentScore: Int = 0
+
 
     var score = 0F
     var player = Player(Vector(400F, 10F))
     lateinit var canvas: Canvas
     lateinit var activity: MainActivity
+    var paused = false // Pause flag
 
     companion object {
         const val TIME_CONSTANT = 0.3F
@@ -43,8 +55,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     init {
-        scorePaint.color = Color.BLACK
-        scorePaint.textSize = 100F
+//        scorePaint.color = Color.BLACK
+//        scorePaint.textSize = 100F
         for (i in 1..(HEIGHT / genStep).toInt()) generatePlatform(Random.nextFloat() * (WIDTH - Platform.size.x), genStep * i)
         addStack.removeAll{it is Monster}
         backgroundPaint.color = Color.WHITE
@@ -52,9 +64,11 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
     private fun gameLoop() {
         if (holder.surface.isValid) {
+            if (paused) return  // Stop game updates when paused
+
             canvas = holder.lockCanvas()
-            canvas.drawColor( 0, PorterDuff.Mode.CLEAR );
-            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
+            canvas.drawColor(0, PorterDuff.Mode.CLEAR)
+//            canvas.drawText("${score.toInt()}", 100F, 100F, scorePaint)
 
             objects.forEach {
                 if(it is IUpdate) it.update(this)
@@ -75,8 +89,8 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         var previousFrameTime = System.currentTimeMillis()
         while (drawing) {
             val currentTime = System.currentTimeMillis()
-            var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
-            gameLoop()
+            var elapsedTimeMS: Double = (currentTime - previousFrameTime).toDouble()
+            if (!paused) gameLoop() // Run only if not paused
             if (elapsedTimeMS < MS_PER_TICK) sleep((MS_PER_TICK - elapsedTimeMS).toLong())
             totalElapsedTime += elapsedTimeMS / 1000.0
             previousFrameTime = currentTime
@@ -94,12 +108,20 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
         thread.start()
     }
 
+    fun togglePause() {
+        paused = !paused
+        activity.runOnUiThread {
+            activity.togglePause() // Notify MainActivity to show/hide pause UI
+        }
+    }
+
     fun setXOrientation(deg: Float) {
         if(player.alive) player.speed.x = deg / 10
     }
 
     private fun changeScore(amount: Float) {
         if(player.alive) score += amount * SCORE_MULTIPLIER
+        increaseScore(amount.toInt())
     }
 
     private fun generatePlatform(x: Float, y: Float) {
@@ -118,7 +140,9 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun moveObjects(amount: Float) {
-        // Generation of the new plateforms
+        if (paused) return // Prevent movement updates when paused
+
+        // Generation of the new platforms
         genBuffer += amount
         for (i in 1..floor(genBuffer * DENSITY / (genStep)).toInt()) {
             generatePlatform(Random.nextFloat() * (WIDTH - Platform.size.x), genBuffer / i + HEIGHT)
@@ -127,10 +151,30 @@ class GameManager @JvmOverloads constructor(context: Context, attributes: Attrib
 
         // Moving the player up
         changeScore(amount)
+
         objects.forEach {
             it.move(Vector(0F, -amount))
             it.checkRemove()
         }
     }
 
+    fun gameOver() {
+        val highScore = sharedPreferences.getInt(HIGH_SCORE_KEY, 0)
+        if (currentScore > highScore) {
+            sharedPreferences.edit().putInt(HIGH_SCORE_KEY, currentScore).apply()
+        }
+
+        // Pass the high score to ReplayActivity
+        val intent = Intent(context, ReplayActivity::class.java).apply {
+            putExtra("currentScore", currentScore)
+            putExtra("highScore", sharedPreferences.getInt(HIGH_SCORE_KEY, 0))
+        }
+        context.startActivity(intent)
+    }
+
+
+    fun increaseScore(points: Int) {
+        score += points
+        activity?.updateScore(score.toInt())  // 🔥 Update the score in MainActivity
+    }
 }

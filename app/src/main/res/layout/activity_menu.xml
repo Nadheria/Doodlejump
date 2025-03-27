@@ -6,14 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
-    <ImageView
-        android:id="@+id/menu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/menu" />
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="comp.json"
+        app:lottie_loop="true" />
+
+    <View
+        android:id="@+id/hiddenTouchArea"
+        android:layout_width="170dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="101dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
